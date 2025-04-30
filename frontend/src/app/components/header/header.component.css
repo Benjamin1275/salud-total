@@ -1,0 +1,29 @@
+.header {
+    background: linear-gradient(to left, #38b6ff, #004aad);
+    padding: 1rem 2rem;
+    color: #ffffff;
+  }
+  
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  
+  .link:hover {
+    text-decoration: underline;
+  }
+  
+  .logo {
+    height: 40px;
+    object-fit: contain;
+  }

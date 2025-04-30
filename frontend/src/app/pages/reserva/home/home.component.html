@@ -1,1 +1,29 @@
-<p>home works!</p>
+<app-card>
+    <div>
+        <label>Previsión médica</label>
+        <div>
+            <mat-form-field>
+                <mat-label>Seleccionar previsión...</mat-label>
+                <mat-select>
+                    @for (previ of prevision; track previ) {
+                    <mat-option [value]="previ.value">{{previ.viewValue}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <label>Médico</label>
+        <div>
+            <mat-form-field>
+                <mat-label>Seleccionar médico...</mat-label>
+                <mat-select>
+                    @for (medico of medicos; track medico) {
+                    <mat-option [value]="medico.value">{{medico.viewValue}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <a mat-flat-button color="primary" href="/horas-atencion">
+        Siguiente
+    </a>
+</app-card>
