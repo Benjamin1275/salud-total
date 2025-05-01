@@ -1,0 +1,62 @@
+<div class="dashboard-container">
+
+    <app-sidebar></app-sidebar>
+
+    <div class="appointment-history-content">
+
+        <div class="search-bar">
+            <mat-form-field appearance="outline">
+                <mat-label>Buscar por RUT o Nombre</mat-label>
+                <input matInput placeholder="Ingrese RUT o Nombre" [(ngModel)]="searchTerm" />
+                <button mat-icon-button matSuffix (click)="clearSearch()">
+                    <mat-icon>clear</mat-icon>
+                </button>
+            </mat-form-field>
+        </div>
+
+        <!-- Tabla de citas -->
+        <table mat-table [dataSource]="filteredAppointments" class="mat-elevation-z8">
+            <!-- Columnas de la tabla -->
+            <ng-container matColumnDef="rut">
+                <th mat-header-cell *matHeaderCellDef> RUT </th>
+                <td mat-cell *matCellDef="let appointment"> {{ appointment.rut }} </td>
+            </ng-container>
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Nombre </th>
+                <td mat-cell *matCellDef="let appointment"> {{ appointment.name }} </td>
+            </ng-container>
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef> Fecha </th>
+                <td mat-cell *matCellDef="let appointment"> {{ appointment.date | date:'dd/MM/yyyy' }} </td>
+            </ng-container>
+            <ng-container matColumnDef="attendance">
+                <th mat-header-cell *matHeaderCellDef> Asistencia </th>
+                <td mat-cell *matCellDef="let appointment">
+                    <button mat-icon-button color="primary" (click)="editAttendance(appointment)">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef> Estado </th>
+                <td mat-cell *matCellDef="let appointment"> {{ appointment.status }} </td>
+            </ng-container>
+            <ng-container matColumnDef="delete">
+                <th mat-header-cell *matHeaderCellDef> Eliminar </th>
+                <td mat-cell *matCellDef="let appointment">
+                    <button mat-icon-button color="warn" (click)="deleteAppointment(appointment)">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <div class="report-section">
+            <button mat-raised-button color="primary" (click)="downloadReport()" class="download-report-button">
+                Descargar Reporte
+            </button>
+        </div>
+    </div>
+</div>

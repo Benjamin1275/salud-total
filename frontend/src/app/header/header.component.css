@@ -1,0 +1,21 @@
+.logo {
+    height: 50px; 
+    width: auto;
+    display: block;
+  }
+
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  margin-right: 1rem;
+}
+
+.nav-links a:hover {
+  text-decoration: underline;
+}

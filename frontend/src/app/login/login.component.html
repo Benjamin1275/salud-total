@@ -1,0 +1,20 @@
+<div class="login-container">
+  <div class="login-box">
+
+    <img src="assets/images/salud_total.png" alt="Logo" class="login-logo" />
+
+    <h2>Bienvenido</h2>
+
+    <mat-form-field appearance="outline" class="login-input">
+      <mat-label>Correo</mat-label>
+      <input matInput type="email" [(ngModel)]="email" placeholder="Ingresa tu correo" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="login-input">
+      <mat-label>Contraseña</mat-label>
+      <input matInput type="password" [(ngModel)]="password" placeholder="Ingresa tu contraseña" />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" class="login-button" (click)="login()">Iniciar Sesión</button>
+  </div>
+</div>

@@ -1,0 +1,20 @@
+<div class="dashboard-container">
+
+  <app-sidebar></app-sidebar>
+
+  <div class="dashboard-content">
+
+    <div class="welcome-message">
+      <p>{{ today }}</p>
+      <p>Bienvenido, {{ doctorName }}</p>
+    </div>
+
+    <div class="chart-selector">
+      <button (click)="changeChartType('bar')">Gráfico de Barras</button>
+    </div>
+
+    <div class="chart-container">
+      <p-chart [type]="selectedChartType" [data]="chartData" [options]="chartOptions"></p-chart>
+    </div>
+  </div>
+</div>
