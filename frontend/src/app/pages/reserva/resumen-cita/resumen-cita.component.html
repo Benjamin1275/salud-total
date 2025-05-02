@@ -1,1 +1,20 @@
-<p>resumen-cita works!</p>
+<app-card>
+    <h2>
+        <h2 class="text-center">Resumen de la cita</h2>
+    </h2>
+    <div>
+        <div class="row">
+            <div class="col-12">
+                <p>Nombre: {{ cita.nombre }}</p>
+                <p>Fecha: {{ cita.fecha}}</p>
+                <p>Hora: {{ cita.hora }}</p>
+            </div>
+
+            <div>
+                <button class="btn btn-primary" (click)="confirmarCita()">
+                    Confirmar cita
+                </button>
+            </div>
+        </div>
+    </div>
+</app-card>
