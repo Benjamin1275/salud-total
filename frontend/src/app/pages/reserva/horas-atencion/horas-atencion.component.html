@@ -1,0 +1,29 @@
+<app-card>
+    <div>
+        <mat-form-field>
+            <mat-label>Seleccionar médico...</mat-label>
+            <mat-select>
+                @for (medico of medicos; track medico) {
+                <mat-option [value]="medico.value">{{medico.viewValue}}</mat-option>
+                }
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <mat-calendar [(selected)]="selected" class="w-80"></mat-calendar>
+    <div>
+        <a mat-flat-button color="primary" href="/datos-paciente">
+            Siguiente
+        </a>
+    </div>
+    <h2>Horas disponibles</h2>
+    <mat-list role="list">
+        <!--Esto tiene que cambiar según el día escogido-->
+        @for (hora of horas; track hora) {
+            <app-card>
+                <mat-list-item role="listitem" >
+                    <span>{{ hora.hora }}</span>
+                </mat-list-item>
+            </app-card>
+        }
+    </mat-list>
+</app-card>
