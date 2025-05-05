@@ -1,29 +1,34 @@
-<app-card>
-    <div>
-        <label>Previsión médica</label>
+<div class="flex justify-center items-center h-screen">
+    <app-card>
         <div>
-            <mat-form-field>
-                <mat-label>Seleccionar previsión...</mat-label>
-                <mat-select>
-                    @for (previ of prevision; track previ) {
-                    <mat-option [value]="previ.value">{{previ.viewValue}}</mat-option>
-                    }
-                </mat-select>
-            </mat-form-field>
+            <label>Previsión médica</label>
+            <div>
+                <mat-form-field>
+                    <mat-label>Seleccionar previsión...</mat-label>
+                    <mat-select  [(ngModel)]="previsionSeleccionada">
+                        @for (previ of previsiones; track previ) {
+                        <mat-option [value]="previ.id">{{previ.nombre}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <label>Especialidad</label>
+            <div>
+                <mat-form-field>
+                    <mat-label>Seleccionar especialidad...</mat-label>
+                    <mat-select [(ngModel)]="especialidadSeleccionada">
+                        @for (espe of especialidades; track espe) {
+                        <mat-option [value]="espe.id">{{espe.nombre}}</mat-option>
+                        }
+                    </mat-select>
+                </mat-form-field>
+            </div>
         </div>
-        <label>Médico</label>
-        <div>
-            <mat-form-field>
-                <mat-label>Seleccionar especialidad...</mat-label>
-                <mat-select>
-                    @for (medico of medicos; track medico) {
-                    <mat-option [value]="medico.value">{{medico.viewValue}}</mat-option>
-                    }
-                </mat-select>
-            </mat-form-field>
-        </div>
-    </div>
-    <a mat-flat-button color="primary" href="/horas-atencion">
-        Siguiente
-    </a>
-</app-card>
+        <a mat-flat-button color="primary" href="/horas-atencion">
+            Siguiente
+        </a>
+        <button mat-flat-button color="primary" (click)="setDatos()" [disabled]="!previsionSeleccionada || !especialidadSeleccionada">
+            Guardar datos
+        </button>
+    </app-card>
+</div>

@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatInputModule } from '@angular/material/input';
+import { DatosService } from '../../../services/datos.service';
 interface Food {
   value: string;
   viewValue: string;
@@ -23,8 +24,21 @@ interface Food {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HorasAtencionComponent {
+  constructor(private datosService: DatosService) {
+    console.log("Servicio de datos inicializado en HorasAtencionComponent");
+  }
   selected = model<Date | null>(null);
 
+
+  ngOnInit() {
+    //Llamar a las horas disponibles del médico (Falta implementar)
+    // this.datosService.getHorasDisponibles().subscribe((horas) => {
+    //   this.horas = horas;
+    // });
+    console.log("Especialidad seleccionada:", this.datosService.especialidad$);
+    console.log("Previsión seleccionada:", this.datosService.prevision$);
+    console.log("Medico seleccionado:", this.datosService.medico$);
+  }
   //ejemplo de un array de horas
   horas = [
     { id: 1, hora: '08:00', disponible: true },

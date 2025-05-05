@@ -5,35 +5,44 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
-
-interface Food {
-  value: string;
-  viewValue: string;
+import { DatosService } from '../../../services/datos.service';
+import { EspecialidadService } from '../../../services/especialidad.service';
+type Especialidad = {
+  id: number;
+  nombre: string;
 }
+
+type Prevision = {
+  id: number;
+  nombre: string;
+}
+
 @Component({
   selector: 'app-home',
   imports: [
-    CardComponent, 
-    MatFormFieldModule, 
-    MatSelectModule, 
-    MatInputModule, 
+    CardComponent,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule,
     FormsModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
 export class HomeComponent {
-  // Esto es una propiedad del componente, que se puede usar en el template
-  prevision: Food[] = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
-  ];
+  especialidades: Especialidad[] = [];
+  previsiones: Prevision[] = [];
+  previsionSeleccionada: number | null = null;
+  especialidadSeleccionada: number | null = null;
 
-  medicos: Food[] = [
-    { value: 'steak-0', viewValue: 'Benjamín' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
-  ];
+  // Inyectar el servicio de datos en el constructor
+  constructor(private datosService: DatosService, private especialidadService: EspecialidadService) {
+    console.log("Servicio de datos inicializado en HomeComponent");
+  }
+
+  ngOnInit() {
+    this.especialidades = this.datosService.getEspecialidades();
+    this.previsiones = this.datosService.getPrevisiones();
+  }
 }
