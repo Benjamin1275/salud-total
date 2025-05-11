@@ -1,16 +1,20 @@
-export const DB_USER = "postgres"
-export const DB_HOST = "localhost"
-export const DB_PASSWORD = "pokemega12"
-export const DB_DATABASE = "postgres"
-export const DB_PORT = 5432
+import dotenv from 'dotenv';
 
-// export const DB_USER2 = "postgres"
-// export const DB_HOST2 = "localhost"
-// export const DB_PASSWORD2 = "pokemega12"
-// export const DB_DATABASE2 = "postgres2"
-// export const DB_PORT2 = 5342
+// Cargar las variables de entorno desde el archivo .env
+dotenv.config();
+
+export const DB_USER = process.env.DB_USER;
+export const DB_HOST = process.env.DB_HOST;
+export const DB_PASSWORD = process.env.DB_PASSWORD;
+export const DB_DATABASE = process.env.DB_DATABASE;
+export const DB_PORT = process.env.DB_PORT;
+export const PORT = process.env.PORT; // || 4080 Valor por defecto si no está definido en .env
 
 
-export const PORT = process.env.PORT || 4080; // Para cambiar el puerto solo una vez
+// export const DB_USER = "administrador"
+// export const DB_HOST = "salud-total.postgres.database.azure.com"
+// export const DB_PASSWORD = "Pokemega12#"
+// export const DB_DATABASE = "salud-total"
+// export const DB_PORT = 5432
 
-// Variables de entorno para producción
+//export const PORT = process.env.PORT || 4080; // Para cambiar el puerto solo una vez
