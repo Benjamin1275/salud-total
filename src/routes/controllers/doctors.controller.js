@@ -6,7 +6,9 @@ import { pool } from "../../db.js";
 
 export const getMedicos = async (req, res) => {
     try {
+        console.log("Intentando conectar a la base de datos...");
         const { rows } = await pool.query("SELECT * FROM medico");
+        console.log("Consulta ejecutada exitosamente");
         res.json(rows);
     } catch (error) {
         console.error("Error al obtener los médicos:", error);
