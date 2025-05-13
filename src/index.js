@@ -6,6 +6,7 @@ import patientsRoutes from './routes/patients.routes.js';
 import doctorsRoutes from './routes/doctors.routes.js';
 import specialtiesRoutes from './routes/specialties.routes.js';
 import appointmentsRoutes from './routes/appointments.routes.js';
+import authRoutes from './routes/auth.routes.js';
 
 import morgan from 'morgan';
 
@@ -24,6 +25,7 @@ app.use(patientsRoutes);
 app.use(doctorsRoutes);
 app.use(specialtiesRoutes);
 app.use(appointmentsRoutes);
+app.use('/api/auth', authRoutes);
 
 
 app.listen(PORT)
