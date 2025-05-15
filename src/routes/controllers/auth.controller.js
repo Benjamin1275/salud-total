@@ -1,90 +1,72 @@
-// Acordarse de importar el pool para la bd
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
+import { pool } from "../../db.js"; // Asegúrate de importar el pool para la base de datos
 
-
-const doctors = [
-    { email: "raul@saludtotal.cl", password: bcrypt.hashSync("1234", 10), name: "Dr. Raúl Pérez" },
-    { email: "maria@saludtotal.cl", password: bcrypt.hashSync("5678", 10), name: "Dra. María López" },
-    { email: "juan@saludtotal.cl", password: bcrypt.hashSync("abcd", 10), name: "Dr. Juan Martínez" }
-];
+// Función para generar un token de acceso
+const createAccessToken = (payload) => {
+    return jwt.sign(payload, "secretKey", { expiresIn: "1h" }); // Cambia "secretKey" por una clave segura en el env de azure y git
+};
 
 // POST /api/auth/login
-// Si la autenticación es exitosa, genera un token JWT que se devuelve al cliente.
-export const login = (req, res) => {
-    const { email, password } = req.body;
+export const login = async (req, res) => {
+    const { correo, contrasena } = req.body; 
+    try {
+        // Verificar si el usuario existe en la base de datos
+        const result = await pool.query("SELECT * FROM usuario WHERE correo = $1", [correo]);
+        if (result.rows.length === 0) {
+            return res.status(400).json({ message: "El correo no está registrado" });
+        }
 
-    //try {
-    // const { rows } = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
-    // const user = rows[0]; 
+        // Verificar si la contraseña es correcta
+        const validPassword = await bcrypt.compare(contrasena, result.rows[0].contrasena);
+        if (!validPassword) {
+            return res.status(400).json({ message: "La contraseña es incorrecta" });
+        }
 
-    // if (!user || !bcrypt.compareSync(password, user.password)) {
-    //     return res.status(401).json({ message: "Correo o contraseña incorrectos" });
-    // }
+        // Generar el token JWT
+        const token = createAccessToken({ id: result.rows[0].idusuario });
 
-    // Buscar al médico en la lista simulada por su correo electrónico.
-    const doctor = doctors.find((d) => d.email === email);
+        // Configurar la cookie con el token
+        res.cookie("token", token, {
+            httpOnly: true, // Evita que el cliente acceda a la cookie desde JavaScript
+            secure: true, // Solo se envía en conexiones HTTPS
+            sameSite: "none", // Permite el uso de cookies en diferentes dominios
+            maxAge: 24 * 60 * 60 * 1000, // 1 día
+        });
 
-    if (!doctor || !bcrypt.compareSync(password, doctor.password)) {
-        return res.status(401).json({ message: "Correo o contraseña incorrectos" });
+        // Devolver los datos del usuario (sin incluir la contraseña)
+        const { contrasena: _, ...userWithoutPassword } = result.rows[0];
+        return res.json(userWithoutPassword);
+    } catch (error) {
+        console.error("Error al autenticar al usuario:", error);
+        return res.status(500).json({ message: "Error interno del servidor" });
     }
-
-    // Generar un token JWT con los datos del médico.
-    // El token incluye el correo y el nombre del médico, y expira en 1 hora.
-    const token = jwt.sign({ email: doctor.email, name: doctor.name }, "secretKey", { expiresIn: "1h" });
-
-    // Devolver el token y los datos del médico al cliente.
-    res.json({ token, user: { email: doctor.email, name: doctor.name } });
-
-    // } catch (error) {
-    // // Manejo de errores en caso de problemas con la base de datos o el servidor
-    // console.error("Error al autenticar al usuario:", error);
-    // res.status(500).json({ message: "Error interno del servidor" });    
-    // }
 };
 
 // GET /api/auth/me
-// Requiere que el cliente envíe un token valido en el encabezado authorization
 export const getUserInfo = (req, res) => {
-    const authHeader = req.headers.authorization;
+    const token = req.cookies.token; // Obtener el token desde las cookies
 
-    if (!authHeader) {
+    if (!token) {
         return res.status(401).json({ message: "Token no proporcionado" });
     }
 
-    // Extraer el token del encabezado Authorization.
-    const token = authHeader.split(" ")[1];
-
     try {
-        // Verificar el token JWT, si es válido devuelve los datos del usuario
+        // Verificar el token JWT
         const decoded = jwt.verify(token, "secretKey");
         res.json({ user: decoded });
     } catch (error) {
-        // Si el token es inválido o ha expirado, devolver un error 401.
         res.status(401).json({ message: "Token inválido o expirado" });
     }
 };
 
-export const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) {
-    return res.status(401).json({ message: "Token no proporcionado" });
-  }
-
-  const token = authHeader.split(" ")[1];
-  try {
-    const decoded = jwt.verify(token, "secretKey");
-    req.user = decoded; // Agrega los datos del usuario al objeto `req`
-    next();
-  } catch (error) {
-    res.status(401).json({ message: "Token inválido o expirado" });
-  }
-};
-
-
 // POST /api/auth/logout
-// Este método cierra la sesión del usuario.
-// En el caso de tokens, el logout se maneja en el cliente eliminando el token almacenado.
 export const logout = (req, res) => {
+    // Limpiar la cookie del token
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+    });
     res.json({ message: "Sesión cerrada exitosamente" });
 };
