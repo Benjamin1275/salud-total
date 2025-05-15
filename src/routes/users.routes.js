@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { getUsuario, getUsuarios } from "./controllers/usuarios.controller.js";
+import { getUsuario, getUsuarios } from "./controllers/users.controller.js";
 
 const router = Router();
 
-// Listar médicos
+// Listar usuarios
 router.get("/usuarios", getUsuarios);
 
-// Obtener un médico por idUsuario
+// Obtener un usuario por idUsuario
 router.get("/usuarios/:idUsuario", getUsuario);
 
 export default router;
