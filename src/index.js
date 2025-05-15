@@ -6,7 +6,6 @@ import patientsRoutes from './routes/patients.routes.js';
 import doctorsRoutes from './routes/doctors.routes.js';
 import specialtiesRoutes from './routes/specialties.routes.js';
 import appointmentsRoutes from './routes/appointments.routes.js';
-import usersRoutes from './routes/users.routes.js';
 import authRoutes from './routes/auth.routes.js';
 
 import morgan from 'morgan';
@@ -24,7 +23,6 @@ app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-app.use(usersRoutes);
 app.use(patientsRoutes);
 app.use(doctorsRoutes);
 app.use(specialtiesRoutes);
